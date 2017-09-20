@@ -105,6 +105,13 @@ describe Kristin do
         doc.should include("DATA_DIR_WORKS")
       end
 
+      it "should be possible to specify dest_dir" do
+        file_basename = File.basename(@target_file)
+        tmpdir = Dir.mktmpdir
+        Kristin::Converter.new(@one_page_pdf, file_basename, { dest_dir: tmpdir }).convert
+        File.exists?("#{tmpdir}/#{file_basename}").should == true
+      end
+
       it "should be possible to specify split_pages" do
         Kristin::Converter.new(@multi_page_pdf, @target_file, { split_pages: true }).convert
         doc = IO.read(@target_file)
